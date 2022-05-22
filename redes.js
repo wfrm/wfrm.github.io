@@ -30,13 +30,22 @@ class Particle{
         this.directionY=directionY;
         this.size=size;
         this.colour=colour;
+        this.radius = Math.random() * (40 - 4) + 4;
+        this.firstColor  = `hsla(184.15530895577427, 100%, 50%, 1)`;//`hsla(${Math.random() * 360}, 100%, 50%, 1)`;
+        this.secondColor = `hsla(228.2505401460392, 100%, 50%, 0)`;
     
     }  
     //method to draw individual particles
     draw=function(){
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+        gradient.addColorStop(0, this.firstColor);
+        gradient.addColorStop(1, this.secondColor);
+        ctx.globalCompositeOperation = `overlay`;
+        ctx.fillStyle = gradient;
+        ctx.shadowColor = "transparent";
         ctx.beginPath();
         ctx.arc(this.x,this.y,this.size,0,Math.PI*2,false);
-        ctx.fillStyle='#8c5523';//ctx.fillStyle=this.colour;
+        //ctx.fillStyle='#8c5523';//ctx.fillStyle=this.colour;
         ctx.fill();
     }
     // check particle possition and mouse positin, move the particle. draw them
@@ -84,7 +93,7 @@ function init(){
     let numberOfParticles=(canvas.height*canvas.height)/9000;
     for(let i=0;i<numberOfParticles;i++)
     {
-        let size=(Math.random()*5)+1;
+        let size=Math.random() * (40 - 4) + 4;//(Math.random()*5)+1;//Math.random() * (40 - 4) + 4;
         let x=(Math.random()*((innerWidth-size*2)-(size*2)+size*2)
         +size*2);
         let y=(Math.random()*((innerHeight-size*2)-(size*2)+size*2)
@@ -124,11 +133,17 @@ function connect()
                 
                         {
                                ctx.lineWidth=1;
-                                ctx.strokestyle='rgba(140,85,31,1)';
-                                ctx.beginPath();
+                               ctx.beginPath();
+                                ctx.strokeStyle = '#0000ff';
+                                ctx.shadowColor = "white";//this.firstColor;
+                                ctx.shadowBlur = 1;
+                                ctx.shadowOffsetX = 0;
+                                ctx.shadowOffsetY = 0;
+                                //ctx.shadowColor = "blue";//this.secondColor;
                                 ctx.moveTo(particlesArray[a].x,particlesArray[a].y);
                                 ctx.lineTo(particlesArray[b].x,particlesArray[b].y);
                                 ctx.stroke();
+
                         }
 
                     }
